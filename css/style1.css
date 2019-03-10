@@ -21,11 +21,19 @@ body {
     padding-left: 350px;
 }
 
+#adapt {
+    height: 120px;
+}
+
 .topcorner {
     position: absolute;
     top: 0;
     right: 0;
     background-color: bisque;
+}
+
+h2 {
+    padding-left: 150px;
 }
 
 hr.style-one {
@@ -98,8 +106,8 @@ button {
     color: #F9F0DA;
 }
 
-/*导航栏*/
-ul {
+/*导航栏1*/
+.coltype ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -107,21 +115,31 @@ ul {
     background-color: steelblue;
 }
 
-li a {
+.coltype li a {
     display: block;
     color: snow;
     padding: 8px 16px;
     text-decoration: none;
 }
 
-li a.active {
+.coltype li a.active {
     background-color: lightcyan;
     color: darkgray;
 }
 
-li a:hover:not(.active) {
+.coltype li a:hover:not(.active) {
     background-color: #555;
     color: white;
+}
+
+/*放大图片*/
+.info img {
+    width: 151%;
+    height: 151%;
+}
+
+.info h1 {
+    text-align: center;
 }
 
 
@@ -135,4 +153,25 @@ li a:hover:not(.active) {
     float: right;
     width: 75%;
     margin-right: 50px;
+}
+
+
+/*文字框*/
+.box {
+    padding-left: 10px;
+    padding-right: 30px;
+    margin-left: 150px;
+    position: relative;
+    border: 2px solid gray;
+    text-indent: 2em;
+}
+
+.box::before {
+    content: attr(title);
+    position: absolute;
+    left: 20%;
+    transform: translateX(-50%);
+    -webkit-transform: translate(-50%, -50%);
+    padding: 2px 30px;
+    background-color: skyblue;
 }
