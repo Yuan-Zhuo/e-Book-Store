@@ -17,8 +17,15 @@ body {
 }
 
 #showoff {
-    height: 350px;
+    height: 320px;
     padding-left: 350px;
+}
+
+.topcorner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: bisque;
 }
 
 hr.style-one {
@@ -115,4 +122,17 @@ li a.active {
 li a:hover:not(.active) {
     background-color: #555;
     color: white;
+}
+
+
+/*浏览*/
+.photo {
+    float: left;
+    width: 20%;
+}
+
+.intro {
+    float: right;
+    width: 75%;
+    margin-right: 50px;
 }
