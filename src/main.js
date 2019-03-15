@@ -5,9 +5,11 @@ import App from './App'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import router from './router'
+import Basic from './components/Basic'
 
-Vue.config.productionTip = false
-Vue.use(iView)
+Vue.config.productionTip = false;
+Vue.use(iView);
+Vue.component("basic",Basic);
 
 /* eslint-disable no-new */
 new Vue({
@@ -15,4 +17,4 @@ new Vue({
   router,
   components: { App },
   template: '<App/>'
-})
+});

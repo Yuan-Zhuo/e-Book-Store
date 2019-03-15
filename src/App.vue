@@ -1,6 +1,9 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div id="app" class="layout">
+      <layout>
+          <basic></basic>
+          <router-view/>
+      </layout>
   </div>
 </template>
 
@@ -11,5 +14,10 @@ export default {
 </script>
 
 <style>
-
+    .layout{
+        border: 0 solid #d7dde4;
+        background: #f5f7f9;
+        position: relative;
+        overflow: hidden;
+    }
 </style>
