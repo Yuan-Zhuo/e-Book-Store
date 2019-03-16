@@ -1,76 +1,61 @@
 <template>
-    <Layout>
-        <div class="search">
-            <Input search enter-button placeholder="Enter something..." />
-        </div>
-        <Breadcrumb :style="{margin: '24px 350px'}">
-            <BreadcrumbItem>搜索</BreadcrumbItem>
-            <BreadcrumbItem>历史人文</BreadcrumbItem>
-            <BreadcrumbItem>纪实文学</BreadcrumbItem>
-        </Breadcrumb>
-        <Content :style="{margin: '0px 250px 0', background: '#fff', minHeight: '500px'}">
-            <Card :bordered="false">
-                <Row>
-                    <Col span="6" offset="1">
-                        <img src="../assets/logo.png" alt="">
-                    </Col>
-                    <Col span="17" class="book-info">
-                        <Cell  to="/Detail">
+    <layout>
+        <basic></basic>
+        <Layout>
+            <div class="search">
+                <Input search enter-button placeholder="Enter something..."></Input>
+            </div>
+            <Breadcrumb :style="{margin: '24px 350px'}">
+                <BreadcrumbItem>搜索</BreadcrumbItem>
+                <BreadcrumbItem>历史人文</BreadcrumbItem>
+                <BreadcrumbItem>纪实文学</BreadcrumbItem>
+            </Breadcrumb>
+            <Content :style="{margin: '0px 250px 0', background: '#fff', minHeight: '500px'}">
+                <Card :bordered="false" v-for="(card,index) in cards">
+                    <Row>
+                        <Col span="6" offset="1">
+                            <img src="../assets/logo.png" alt="">
+                        </Col>
+                        <Col span="17" class="book-info">
                             <br>
-                            <h1>他改变了中国</h1>
-                            <br>
-                            <p>江泽民传 库恩著人物传记政治人物中国第三代领导人认识 当代中国 政治历史领袖人物传记</p>
-                            <br>
-                            <p><em>$20.12</em></p>
-                            <br>
-                        </Cell>
-                    </Col>
-                </Row>
-            </Card>
-            <Card :bordered="false">
-                <Row>
-                    <Col span="6" offset="1">
-                        <img src="../assets/logo.png" alt="">
-                    </Col>
-                    <Col span="17" class="book-info">
-                        <Cell  to="/Detail">
-                            <br>
-                            <h1>他改变了中国</h1>
-                            <br>
-                            <p>江泽民传 库恩著人物传记政治人物中国第三代领导人认识 当代中国 政治历史领袖人物传记</p>
-                            <br>
-                            <p><em>$20.12</em></p>
-                            <br>
-                        </Cell>
-                    </Col>
-                </Row>
-            </Card>
-            <Card :bordered="false">
-                <Row>
-                    <Col span="6" offset="1">
-                        <img src="../assets/logo.png" alt="">
-                    </Col>
-                    <Col span="17" class="book-info">
-                        <Cell  to="/Detail">
-                            <br>
-                            <h1>他改变了中国</h1>
-                            <br>
-                            <p>江泽民传 库恩著人物传记政治人物中国第三代领导人认识 当代中国 政治历史领袖人物传记</p>
-                            <br>
-                            <p><em>$20.12</em></p>
-                            <br>
-                        </Cell>
-                    </Col>
-                </Row>
-            </Card>
-        </Content>
-        <Footer class="layout-footer-center">2019 &copy; BookStore</Footer>
-    </Layout>
+                            <CellGroup>
+                                <Cell>
+                                    <h1 v-on:click="switchColor(index)" v-bind:class="{titleColor:card.isRed}">他改变了中国</h1>
+                                </Cell>
+                                <Cell  to="/Detail">
+                                    <br>
+                                    <p>江泽民传 库恩著人物传记政治人物中国第三代领导人认识 当代中国 政治历史领袖人物传记</p>
+                                    <br>
+                                    <p><em>$20.12</em></p>
+                                    <br>
+                                </Cell>
+                            </CellGroup>
+                        </Col>
+                    </Row>
+                </Card>
+            </Content>
+            <Footer class="layout-footer-center">2019 &copy; BookStore</Footer>
+        </Layout>
+    </layout>
 </template>
 
 <script>
     export default {
-        name: "Browse"
+        name: "Browse",
+        data() {
+            return{
+                cards:[
+                    {isRed:false},
+                    {isRed:false},
+                    {isRed:false},
+                ]
+            }
+        },
+        methods: {
+            switchColor: function (index) {
+                (this.cards[index]).isRed=!(this.cards[index]).isRed;
+            }
+        }
     }
 </script>
 
@@ -83,6 +68,9 @@
     }
     .search{
         margin: 20px 500px 0;
+    }
+    .titleColor{
+        color: red;
     }
     img{
         height:100%;

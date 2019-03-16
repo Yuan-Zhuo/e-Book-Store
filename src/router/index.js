@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Browse from '@/components/Browse'
 import Detail from '@/components/Detail'
+import Sign from '@/components/Sign'
 
 Vue.use(Router);
 
@@ -10,6 +11,11 @@ export default new Router({
   routes: [
       {
           path: '/',
+          name: 'Sign',
+          component: Sign
+      },
+      {
+          path: '/Home',
           name: 'Home',
           component: Home
       },
@@ -22,7 +28,7 @@ export default new Router({
           path: '/Detail',
           name: 'Detail',
           component: Detail
-      },
+      }
   ],
   mode:'history'
 })
