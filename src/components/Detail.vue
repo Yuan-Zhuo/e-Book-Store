@@ -6,26 +6,25 @@
                 <Input search enter-button placeholder="Enter something..."></Input>
             </div>
             <Breadcrumb :style="{margin: '24px 350px'}">
-                <BreadcrumbItem>搜索</BreadcrumbItem>
-                <BreadcrumbItem>历史人文</BreadcrumbItem>
-                <BreadcrumbItem>纪实文学</BreadcrumbItem>
-                <BreadcrumbItem>他改变了中国</BreadcrumbItem>
+                <BreadcrumbItem>主页</BreadcrumbItem>
+                <BreadcrumbItem>{{generateClass()}}</BreadcrumbItem>
+                <BreadcrumbItem>{{cur_book.book_name}}</BreadcrumbItem>
             </Breadcrumb>
             <Content :style="{margin: '0px 250px 0', background: '#fff', minHeight: '500px'}">
-                <Rol>
+                <Row>
                     <div class="space"></div>
                     <Col span="6" offset="2">
-                        <img src="../assets/logo.png" alt="">
+                        <img v-bind:src=generatePath() alt="">
                     </Col>
                     <Col span="13" offset="1">
                         <div class="space"></div>
-                        <h1 style="font-size:30px;">他改变了中国</h1>
+                        <h1 style="font-size:30px;">{{cur_book.book_name}}</h1>
                         <br>
-                        <h4>江泽民传 库恩著人物传记政治人物中国第三代领导人认识 当代中国 政治历史领袖人物传记</h4>
+                        <h4>{{cur_book.author_name}}</h4>
                         <div class="space"></div>
-                        <Button type="error">加入购物车</Button>
+                        <Button type="error" @click="addBook">加入购物车</Button>
                     </Col>
-                </Rol>
+                </Row>
                 <div class="details">
                     <Divider orientation="left">内容简介</Divider>
                     <p>《他改变了中国：江泽民传》这本传记介绍了江泽民同志的人生历程，尤其是阐述和评价了江泽民同志担任中国主要领导人的10多年中创立的历史功绩。
@@ -39,7 +38,7 @@
                     </p>
                     <Divider orientation="left">精彩书评</Divider>
                     <p>
-                        《江泽民传》是罗伯特·劳伦斯·库恩对江泽民精心研究之力作。书中生动地刻画了在一个特殊的变革时期领导世界上人口zui多的国家的zui高领导人的形象。所有有兴趣更好地理解中国未来发展动力的人，都会从书中受益匪浅。
+                        《江泽民传》是罗伯特·劳伦斯·库恩对江泽民精心研究之力作。书中生动地刻画了在一个特殊的变革时期领导世界上人口最多的国家的最高领导人的形象。所有有兴趣更好地理解中国未来发展动力的人，都会从书中受益匪浅。
                     </p>
                     <p class="comment">——美国前国务卿亨利·基辛格</p>
                     <br>
@@ -57,33 +56,77 @@
 
 <script>
     export default {
-        name: "Detail"
+        name: "Detail",
+        props: ['cur_book'],
+        methods: {
+            generatePath() {
+                let book = this.cur_book;
+                let dir = "";
+                switch (book.class) {
+                    case 0:
+                        dir = "历史人文";
+                        break;
+                    case 1:
+                        dir = "科学技术";
+                        break;
+                    case 2:
+                        dir = "政治哲学";
+                        break;
+                }
+                return require("../assets/".concat(dir).concat("/").concat(book.book_name).concat(".jpg"));
+            },
+            generateClass() {
+                let str = '';
+                switch (this.cur_book.class) {
+                    case 0:
+                        str = "历史人文";
+                        break;
+                    case 1:
+                        str = "科学技术";
+                        break;
+                    case 2:
+                        str = "政治哲学";
+                        break;
+                }
+                return str;
+            },
+            addBook() {
+                this.$Message.info('已添加到购物车');
+                this.$emit('addBook', true);
+            }
+        }
     }
 </script>
 
 <style scoped>
-    .layout-footer-center{
+    .layout-footer-center {
         text-align: center;
     }
-    img{
-        height:120%;
+
+    img {
+        height: 120%;
         width: 120%;
     }
-    p{
-        text-align:left;
-        text-indent:2em;
-        letter-spacing:0.5px;
+
+    p {
+        text-align: left;
+        text-indent: 2em;
+        letter-spacing: 0.5px;
     }
-    .details{
+
+    .details {
         margin: 30px 120px 0;
     }
-    .space{
+
+    .space {
         margin: 30px 0 0;
     }
-    .comment{
-        text-indent:40em;
+
+    .comment {
+        text-indent: 40em;
     }
-    .search{
+
+    .search {
         margin: 20px 500px 0;
     }
 </style>

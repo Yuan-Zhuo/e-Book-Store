@@ -57,6 +57,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
+
+    // header jpg
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'index.html',
+      favicon: path.resolve('./src/assets/review.jpg'), // 引入图片地址
+      inject: true
+    }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {

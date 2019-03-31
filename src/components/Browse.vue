@@ -3,33 +3,40 @@
         <basic></basic>
         <Layout>
             <div class="search">
-                <Input search enter-button placeholder="Enter something..."></Input>
+                <Input v-model="input" search enter-button placeholder="输入你想要找的书"></Input>
             </div>
-            <Breadcrumb :style="{margin: '24px 350px'}">
-                <BreadcrumbItem>搜索</BreadcrumbItem>
-                <BreadcrumbItem>历史人文</BreadcrumbItem>
-                <BreadcrumbItem>纪实文学</BreadcrumbItem>
-            </Breadcrumb>
-            <Content :style="{margin: '0px 250px 0', background: '#fff', minHeight: '500px'}">
-                <Card :bordered="false" v-for="(card,index) in cards">
+            <Row>
+                <Col span="18">
+                    <Breadcrumb :style="{margin: '24px 350px'}">
+                        <BreadcrumbItem>主页</BreadcrumbItem>
+                        <BreadcrumbItem>搜索</BreadcrumbItem>
+                    </Breadcrumb>
+                </Col>
+                <Col span="6">
+                    <br>
+                    <br>
+                    <i-switch size="large" @on-change="change">
+                        <span slot="open">完成</span>
+                        <span slot="close">开启</span>
+                    </i-switch>
+                </Col>
+            </Row>
+
+            <Content :style="{margin: '0px 300px 0', background: '#fff', minHeight: '100px'}"
+                     v-if="book_list.length > 0">
+
+                <Card :bordered="false" v-for="(book,index) in book_list">
                     <Row>
-                        <Col span="6" offset="1">
-                            <img src="../assets/logo.png" alt="">
+                        <Col span="6" offset="2">
+                            <img v-bind:src=generatePath(book) alt="">
                         </Col>
-                        <Col span="17" class="book-info">
-                            <br>
-                            <CellGroup>
-                                <Cell>
-                                    <h1 v-on:click="switchColor(index)" v-bind:class="{titleColor:card.isRed}">他改变了中国</h1>
-                                </Cell>
-                                <Cell  to="/Detail">
-                                    <br>
-                                    <p>江泽民传 库恩著人物传记政治人物中国第三代领导人认识 当代中国 政治历史领袖人物传记</p>
-                                    <br>
-                                    <p><em>$20.12</em></p>
-                                    <br>
-                                </Cell>
-                            </CellGroup>
+                        <Col span="16" class="book-info">
+                            <h2>{{book.book_name}}</h2>
+
+                            <Button @click="switchBook(book)" type="text">
+                                <p><em>{{generateAuthor(book.author_name)}}</em></p>
+                                <p><em>{{generatePrice(book.price)}}</em></p>
+                            </Button>
                         </Col>
                     </Row>
                 </Card>
@@ -42,38 +49,102 @@
 <script>
     export default {
         name: "Browse",
+        props: ['books'],
+
         data() {
-            return{
-                cards:[
-                    {isRed:false},
-                    {isRed:false},
-                    {isRed:false},
-                ]
+            return {
+                isOpen: false,
+                input: '',
+                initFlag: false,
+                book_dict: [],
             }
         },
         methods: {
-            switchColor: function (index) {
-                (this.cards[index]).isRed=!(this.cards[index]).isRed;
+            generatePrice(str) {
+                return "价格: " + str + "元";
+            },
+            generateAuthor(str) {
+                return "作者：" + str;
+            },
+            generatePath(book) {
+                let dir = "";
+                switch (book.class) {
+                    case 0:
+                        dir = "历史人文";
+                        break;
+                    case 1:
+                        dir = "科学技术";
+                        break;
+                    case 2:
+                        dir = "政治哲学";
+                        break;
+                }
+                return require("../assets/".concat(dir).concat("/").concat(book.book_name).concat(".jpg"));
+            },
+            switchBook(book) {
+                this.$emit('curBook', book);
+                this.$router.push({path: '/Detail'});
+            },
+            change() {
+                this.isOpen = !this.isOpen;
+            }
+        },
+        computed: {
+            book_list: function () {
+                if (!this.initFlag) {
+                    for (let j = 0; j < this.books.length; ++j) {
+                        for (let i = 0; i < 7; ++i) {
+                            let book = this.books[j][i];
+                            this.$set(book, 'isRed', false);
+                            this.book_dict.push(book);
+                        }
+                    }
+
+                    this.initFlag = true;
+                }
+
+                let cur_list = this.book_dict;
+                let input = this.input;
+
+                if (input) {
+                    cur_list = cur_list.filter(function (book) {
+                        return Object.keys(book).some(function (key) {
+                            return String(book[key]).toLowerCase().indexOf(input) > -1
+                        })
+                    })
+                }
+
+                if (this.isOpen) {
+                    cur_list = cur_list.sort(function (book_x, book_y) {
+                        return book_x.book_name.localeCompare(book_y.book_name);
+                    })
+                } else {
+                    cur_list = cur_list.sort(function (book_x, book_y) {
+                        return book_x.price - book_y.price;
+                    })
+                }
+
+                return cur_list;
             }
         }
     }
 </script>
 
 <style scoped>
-    .layout-footer-center{
+    .layout-footer-center {
         text-align: center;
     }
-    .book-info{
-        margin: 30px 0 0;
+
+    .book-info {
+        margin: 10px 0 0;
     }
-    .search{
+
+    .search {
         margin: 20px 500px 0;
     }
-    .titleColor{
-        color: red;
-    }
-    img{
-        height:100%;
-        width: 100%;
+
+    img {
+        height: 40%;
+        width: 40%;
     }
 </style>

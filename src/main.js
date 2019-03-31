@@ -9,12 +9,11 @@ import Basic from './components/Basic'
 
 Vue.config.productionTip = false;
 Vue.use(iView);
-Vue.component("basic",Basic);
+Vue.component("basic", Basic);
 
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+    el: '#app',
+    router,
+    components: {App},
+    template: '<App/>'
 });
